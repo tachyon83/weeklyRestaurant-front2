@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 import Main from './component/Main';
 import Login from './component/Login';
@@ -10,6 +10,12 @@ import CookingDetail from './component/CookingDetail';
 
 const App = () => {
   const [islogin, setIslogin] = useState(false);
+
+  useEffect(() => {
+    if(islogin !== JSON.parse(sessionStorage.getItem('islogin'))){
+      setIslogin(true)
+    }
+  }, [])
 
   return(
     <Router basename={'/'}>
@@ -29,7 +35,10 @@ const App = () => {
                 : <Login setIslogin={setIslogin} />
               }
             </Route>
-            <Route path="/cookingList/:cookingId" component={CookingDetail} />
+            <Route 
+              path="/cookingList/:cookingId" 
+              render={()=><CookingDetail islogin={islogin} />}
+            />
             <Route path="/cookingList">
               <CookingList />
             </Route>

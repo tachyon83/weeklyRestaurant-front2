@@ -28,7 +28,8 @@ const Login = ({ setIslogin }) => {
       withCredentials: true
     }).then((result) => {
       console.log(result)
-      setIslogin(true)
+      setIslogin(true);
+      sessionStorage.setItem('islogin', true);
     }).catch(error => { console.log('failed', error) })
   }, [loginValue]);
 

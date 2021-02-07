@@ -12,7 +12,8 @@ const Navigation = (props) => {
       axios.get(`${host.server}/member/logout`, {
         withCredentials: true
       }).then((result) => {
-        setIslogin(false)
+        setIslogin(false);
+        sessionStorage.removeItem('islogin')
       }).catch( error => { console.log('failed', error) })
     }, [setIslogin])
 

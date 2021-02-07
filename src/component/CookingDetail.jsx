@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import axios from 'axios';
 import InventoryItem from './InventoryItem'
 const host = require("../host");
 
-const CookingDetail = ({ history }) => {
+const CookingDetail = ({ islogin }) => {
     let { cookingId } = useParams();
+    let history = useHistory();
 
     const [cookingDetail, setCookingDetail] = useState()
 
@@ -26,12 +27,7 @@ const CookingDetail = ({ history }) => {
         axios.delete(`${host.server}/recipe`, {
             data: { id: `${cookingId}` },
             withCredentials: true
-            // id: `${cookingId}`
-        }
-            // {
-            //     withCredentials: true
-            // }
-        ).then((result) => {
+        }).then((result) => {
             console.log('삭제완료', cookingId, result)
             history.push('/cookingList');
         }).catch(error => { console.log('failed', error) });
@@ -50,10 +46,14 @@ const CookingDetail = ({ history }) => {
                                     <span>이미지 URL</span>
                                     <p>{cookingDetail.img}</p>
                                 </div>
-                                <div className="CookingDetail__buttonWrap">
-                                    <Link to={`/cookingForm/${cookingId}`} className="CookingDetail__button CookingDetail__button--edit">수정하기</Link>
-                                    <button className="CookingDetail__button CookingDetail__button--delete" onClick={onDeleteRecipe}>삭제</button>
-                                </div>
+                                {
+                                    islogin && (
+                                        <div className="CookingDetail__buttonWrap">
+                                            <Link to={`/cookingForm/${cookingId}`} className="CookingDetail__button CookingDetail__button--edit">수정하기</Link>
+                                            <button className="CookingDetail__button CookingDetail__button--delete" onClick={onDeleteRecipe}>삭제</button>
+                                        </div>
+                                    )
+                                }
                             </div>
                             <div className="CookingDetail__thumb">
                                 <img src={cookingDetail.img} alt="" />

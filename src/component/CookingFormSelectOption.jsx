@@ -28,7 +28,6 @@ const CookingFormSelectOption = ({ targetCategory, setTargetCategory, handleValu
 
 
   // 현재 선택 셀렉트박스
-  console.log('baseOption in cookingFromselectoption', baseOption)
   const [selectedKey, setSelectedKey] = useState({
     key: Object.keys(baseOption[0]),
     index: 0,
