@@ -172,11 +172,10 @@ const CalendarItemContent = (props) => {
     setIsDetailPopup(true);
   });
 
-
   useEffect(()=>{
     console.log('handleDeleteOnCalendar')
     if(onClickDelete){
-      const planArr = JSON.parse(JSON.stringify( fullCalendarData.data ))
+      const planArr = {...fullCalendarData.data};
       for(let i = 0; i < 7; i++){
         for(let j = 0; j < 3; j++){
           planArr[i][j] = planArr[i][j].id
@@ -217,7 +216,6 @@ const CalendarItemContent = (props) => {
     //   }).catch(error => { console.log('failed', error) })
     // }
   }, [planArrDelete])
-
 
   return (
     <div className="CalendarMenu__wrap">
