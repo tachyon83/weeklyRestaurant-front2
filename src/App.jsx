@@ -12,7 +12,7 @@ const App = () => {
   const [islogin, setIslogin] = useState(false);
 
   useEffect(() => {
-    if(islogin !== JSON.parse(sessionStorage.getItem('islogin'))){
+    if(JSON.parse(sessionStorage.getItem('islogin'))){
       setIslogin(true)
     }
   }, [])

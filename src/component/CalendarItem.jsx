@@ -164,58 +164,36 @@ const CalendarItemContent = (props) => {
   const { setIsDetailPopup, name, id, img, setPopupCookingId, islogin, fullCalendarData, setCalendarData, calendarSelectData } = props;
   const { setCalendarSelectData, eatTime, week, setYear, setWeek } = props;
 
-  const [planArrDelete, setPlanArrDelete] = useState();
-  const [onClickDelete, setOnclickDelete] = useState(false);
-
   const handleShowDetail = useCallback(() => {
     setPopupCookingId(id);
     setIsDetailPopup(true);
   });
 
-  useEffect(()=>{
-    console.log('handleDeleteOnCalendar')
-    if(onClickDelete){
-      const planArr = {...fullCalendarData.data};
-      for(let i = 0; i < 7; i++){
-        for(let j = 0; j < 3; j++){
-          planArr[i][j] = planArr[i][j].id
-        }
-      }
-      if(calendarSelectData){
-        setPlanArrDelete([...planArr, planArr[calendarSelectData.planWeek][calendarSelectData.planEatTime] = null]);
-      }
-      setOnclickDelete(false)
-    }
-  }, [calendarSelectData])
-
   const handleDeleteOnCalendar = useCallback(() => {
-    setOnclickDelete(true)
-    setCalendarSelectData({
+    const planArr = [...fullCalendarData.data];
+    for(let i = 0; i < 7; i++){
+      for(let j = 0; j < 3; j++){
+        planArr[i][j] = planArr[i][j].id
+      }
+    }
+    planArr[week][eatTime] = null;
+
+    axios.put(`${host.server}/plan`,{
       year: setYear,
       week: setWeek,
-      planWeek: week,
-      planEatTime: eatTime,
-    });
-  }, [setYear, setWeek, week, eatTime]);
+      plan: planArr
+    },{
+        withCredentials: true
+    }).then((result) => {
+      console.log('success plan delete', planArr, result)
+        axios.get(`${host.server}/plan/${setYear}/${setWeek}`, {
+            withCredentials: true
+        }).then((result) => {
+            setCalendarData(result.data)
+        }).catch(error => { console.log('failed', error) })
+    }).catch(error => { console.log('failed', error) })
 
-  useEffect(() => {
-    console.log('planArrDelete')
-    // if(calendarSelectData){
-    //   axios.put(`${host.server}/plan`,{
-    //     year: calendarSelectData.year,
-    //     week: calendarSelectData.week,
-    //     plan: planArrDelete
-    //   },{
-    //       withCredentials: true
-    //   }).then((result) => {
-    //       axios.get(`${host.server}/plan/${calendarSelectData.year}/${calendarSelectData.week}`, {
-    //           withCredentials: true
-    //       }).then((result) => {
-    //           setCalendarData(result.data)
-    //       }).catch(error => { console.log('failed', error) })
-    //   }).catch(error => { console.log('failed', error) })
-    // }
-  }, [planArrDelete])
+  }, [setYear, setWeek, week, eatTime, fullCalendarData]);
 
   return (
     <div className="CalendarMenu__wrap">
