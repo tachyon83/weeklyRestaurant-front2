@@ -170,22 +170,16 @@ const CalendarItemContent = (props) => {
   });
 
   const handleDeleteOnCalendar = useCallback(() => {
-    const planArr = [...fullCalendarData.data];
-    for(let i = 0; i < 7; i++){
-      for(let j = 0; j < 3; j++){
-        planArr[i][j] = planArr[i][j].id
-      }
-    }
-    planArr[week][eatTime] = null;
-
     axios.put(`${host.server}/plan`,{
       year: setYear,
       week: setWeek,
-      plan: planArr
+      day: week,
+      meal: eatTime,
+      recipeId: null,
     },{
         withCredentials: true
     }).then((result) => {
-      console.log('success plan delete', planArr, result)
+      console.log('success plan delete', result)
         axios.get(`${host.server}/plan/${setYear}/${setWeek}`, {
             withCredentials: true
         }).then((result) => {
@@ -193,7 +187,7 @@ const CalendarItemContent = (props) => {
         }).catch(error => { console.log('failed', error) })
     }).catch(error => { console.log('failed', error) })
 
-  }, [setYear, setWeek, week, eatTime, fullCalendarData]);
+  }, [setYear, setWeek, week, eatTime]);
 
   return (
     <div className="CalendarMenu__wrap">

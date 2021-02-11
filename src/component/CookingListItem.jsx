@@ -25,23 +25,23 @@ const CookingListItem = (props) => {
         setIsListPopup(prevState => false);
         setPopupCookingId(prevState => id);
 
-        let planArr = [...calendarData.data];
-        planArr[calendarSelectData.planWeek][calendarSelectData.planEatTime] = id;
-
         axios.put(`${host.server}/plan`,{
             year: calendarSelectData.year,
             week: calendarSelectData.week,
-            plan: planArr
+            day: calendarSelectData.planWeek,
+            meal: calendarSelectData.planEatTime,
+            recipeId: id,
         },{
             withCredentials: true
         }).then((result) => {
+            console.log(result)
             axios.get(`${host.server}/plan/${calendarSelectData.year}/${calendarSelectData.week}`, {
                 withCredentials: true
             }).then((result) => {
                 setCalendarData(result.data)
             }).catch(error => { console.log('failed', error) })
         }).catch(error => { console.log('failed', error) })
-    })
+    }, [calendarSelectData, id])
 
     return(
         <li className="CookingList__dishItem DishItem">

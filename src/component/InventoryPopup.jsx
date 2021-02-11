@@ -4,7 +4,9 @@ const host = require("../host");
 
 const InventoryPopup = (props) => {
     const {inventoryPopupInfo, setInventoryPopupInfo, ingredient, setIngredient} = props;
+    console.log(inventoryPopupInfo, 'popupInfo')
     const [inventoryInputValue, setInventoryInputValue] = useState({
+        ingredientType: inventoryPopupInfo.category === 'meat' ? 0 : 'fish' ? 1 : 'sauce' ? 2 : 'misc' ? 3 : null,
         name: null,
         amount: null,
         unit: null
@@ -38,9 +40,7 @@ const InventoryPopup = (props) => {
             copyIngredient[inventoryPopupInfo.category].push(inventoryInputValue);
         }
 
-        console.log(copyIngredient, 'copyIngredient')
-
-        axios.put(`${host.server}/inventory`, copyIngredient,{
+        axios.put(`${host.server}/inventory`, inventoryInputValue,{
             withCredentials: true
         }).then((result) => {
             console.log(result);
@@ -66,6 +66,7 @@ const InventoryPopup = (props) => {
     const handleAddInput = useCallback((e)=>{
         if(inventoryPopupInfo.modifyMode){
             setInventoryInputValue({
+                ...inventoryInputValue,
                 name: inventoryPopupInfo.modifyModeName,
                 amount: e.currentTarget.value,
                 unit: inventoryPopupInfo.modifyModeUnit,
