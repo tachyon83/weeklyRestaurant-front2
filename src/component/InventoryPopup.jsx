@@ -6,7 +6,7 @@ const InventoryPopup = (props) => {
     const {inventoryPopupInfo, setInventoryPopupInfo, ingredient, setIngredient} = props;
     console.log(inventoryPopupInfo, 'popupInfo')
     const [inventoryInputValue, setInventoryInputValue] = useState({
-        ingredientType: inventoryPopupInfo.category === 'meat' ? 0 : 'fish' ? 1 : 'sauce' ? 2 : 'misc' ? 3 : null,
+        ingredientType: inventoryPopupInfo.category === 'meat' ? 0 : inventoryPopupInfo.category === 'fish' ? 1 : inventoryPopupInfo.category === 'misc' ? 2 : inventoryPopupInfo.category === 'sauce' ? 3 : null,
         name: null,
         amount: null,
         unit: null
@@ -61,7 +61,7 @@ const InventoryPopup = (props) => {
             })
         }).catch(error => { console.log('failed', error) });
         
-    })
+    }, [inventoryPopupInfo, inventoryInputValue])
 
     const handleAddInput = useCallback((e)=>{
         if(inventoryPopupInfo.modifyMode){
@@ -74,7 +74,7 @@ const InventoryPopup = (props) => {
         } else {
             setInventoryInputValue({...inventoryInputValue, [e.target.name]: e.currentTarget.value})
         }
-    }, [inventoryInputValue])
+    }, [inventoryInputValue, inventoryPopupInfo])
 
     return (
         <div className="InventoryPopup">
