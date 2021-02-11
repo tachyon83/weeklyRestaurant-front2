@@ -1,11 +1,12 @@
 import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import logo from '../images/logo.png';
 import axios from 'axios';
 const host = require("../host");
 
 const Navigation = (props) => {
   const {islogin, setIslogin} = props
+  let history = useHistory();
 
   const handleLogout = useCallback(
     () => {
@@ -13,7 +14,8 @@ const Navigation = (props) => {
         withCredentials: true
       }).then((result) => {
         setIslogin(false);
-        sessionStorage.removeItem('islogin')
+        sessionStorage.removeItem('islogin');
+        history.push('/');
       }).catch( error => { console.log('failed', error) })
     }, [setIslogin])
 
