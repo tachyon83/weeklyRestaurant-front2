@@ -7,9 +7,11 @@ import Inventory from './component/Inventory';
 import CookingForm from './component/CookingForm';
 import CookingList from './component/CookingList';
 import CookingDetail from './component/CookingDetail';
+import Loading from './component/Loading';
 
 const App = () => {
   const [islogin, setIslogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if(JSON.parse(sessionStorage.getItem('islogin'))){
@@ -19,6 +21,7 @@ const App = () => {
 
   return(
     <Router basename={'/'}>
+      <Loading isLoading={isLoading} />
       <Navigation islogin={islogin} setIslogin={setIslogin} />
       <main>
         <div className="layoutWrap">
@@ -27,6 +30,7 @@ const App = () => {
             <Route exact path="/">
               <Main 
                 islogin={islogin}
+                setIsLoading={setIsLoading} 
               />
             </Route>
             <Route path="/login">
@@ -37,17 +41,19 @@ const App = () => {
             </Route>
             <Route 
               path="/cookingList/:cookingId" 
-              render={()=><CookingDetail islogin={islogin} />}
+              render={()=><CookingDetail islogin={islogin} setIsLoading={setIsLoading} />}
             />
             <Route path="/cookingList">
-              <CookingList />
+              <CookingList setIsLoading={setIsLoading} />
             </Route>
-            <Route path="/cookingForm/:cookingId" component={CookingForm} />
+            <Route path="/cookingForm/:cookingId">
+              <CookingForm setIsLoading={setIsLoading} />
+            </Route>
             <Route path="/cookingForm">
-              <CookingForm />
+              <CookingForm setIsLoading={setIsLoading} />
             </Route>
             <Route path="/inventory">
-              <Inventory />
+              <Inventory setIsLoading={setIsLoading} />
             </Route>
           </Switch>
         </div>

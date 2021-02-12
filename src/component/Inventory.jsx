@@ -4,7 +4,7 @@ import InventoryItem from './InventoryItem';
 import InventoryPopup from './InventoryPopup';
 const host = require("../host");
 
-const Inventory = () => {
+const Inventory = ({setIsLoading}) => {
   const [ingredient, setIngredient] = useState(null);
   const [inventoryPopupInfo, setInventoryPopupInfo] = useState({
     display: false,
@@ -18,10 +18,12 @@ const Inventory = () => {
   })
 
   useEffect(() => {
+    setIsLoading(true);
     axios.get(`${host.server}/inventory`, {
       withCredentials: true
     }).then((result) => {
       setIngredient(result.data.data);
+      setIsLoading(false);
     }).catch(error => { console.log('failed', error) });
   }, [])
 
@@ -50,6 +52,7 @@ const Inventory = () => {
               setInventoryPopupInfo={setInventoryPopupInfo} 
               ingredient={ingredient} 
               setIngredient={setIngredient} 
+              setIsLoading={setIsLoading}
             />}
             <dl>
               <dt className="Inventory__category">

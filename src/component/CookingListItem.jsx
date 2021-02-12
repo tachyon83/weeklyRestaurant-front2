@@ -10,7 +10,7 @@ const CookingListItem = (props) => {
     const setIsListPopup = props.setIsListPopup;
     const setIsDetailPopup = props.setIsDetailPopup;
     const setPopupCookingId = props.setPopupCookingId;
-    const {popupCookingId, calendarSelectData, calendarData, setCalendarData} = props;
+    const {popupCookingId, calendarSelectData, calendarData, setCalendarData, setIsLoading} = props;
 
     const handlePopupControl = useCallback(
         () => {
@@ -24,6 +24,7 @@ const CookingListItem = (props) => {
     const handleCanlendarPlan = useCallback(()=>{    
         setIsListPopup(prevState => false);
         setPopupCookingId(prevState => id);
+        setIsLoading(true);
 
         axios.put(`${host.server}/plan`,{
             year: calendarSelectData.year,
@@ -38,7 +39,8 @@ const CookingListItem = (props) => {
             axios.get(`${host.server}/plan/${calendarSelectData.year}/${calendarSelectData.week}`, {
                 withCredentials: true
             }).then((result) => {
-                setCalendarData(result.data)
+                setCalendarData(result.data);
+                setIsLoading(false);
             }).catch(error => { console.log('failed', error) })
         }).catch(error => { console.log('failed', error) })
     }, [calendarSelectData, id])

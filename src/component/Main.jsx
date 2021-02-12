@@ -5,7 +5,7 @@ import CookingListPop from './CookingListPop';
 
 const Main = (props) => {
   
-  const { islogin } = props;
+  const { islogin, setIsLoading } = props;
   const [ isDetailPopup, setIsDetailPopup ] = useState(false);
   const [ isListPopup, setIsListPopup ] = useState(false);
   const [ popupCookingId, setPopupCookingId ] = useState();
@@ -24,12 +24,14 @@ const Main = (props) => {
         setCalendarData={setCalendarData}
         calendarSelectData={calendarSelectData}
         setCalendarSelectData={setCalendarSelectData}
+        setIsLoading={setIsLoading}
       />
       {
         isDetailPopup &&
           <CookingDetailPop
             setIsDetailPopup={setIsDetailPopup}
             popupCookingId={popupCookingId}
+            setIsLoading={setIsLoading}
           />
       }
       {
@@ -42,6 +44,7 @@ const Main = (props) => {
             setCalendarData={setCalendarData}
             popupCookingId={popupCookingId}
             calendarSelectData={calendarSelectData}
+            setIsLoading={setIsLoading}
           />
       }
     </>

@@ -9,11 +9,11 @@ const randomImageNumber = () => {
 }
 
 const CalendarItem = (props = null) => {
-  const { fullCalendarData, calendarData, setCalendarData, calendarSelectData, setIsDetailPopup, setIsListPopup, date, week, setYear, setWeek, setDay, islogin, setPopupCookingId, setCalendarSelectData } = props;
+  const {setIsLoading, todayYear,todayMonth,todayDate,setMonth, fullCalendarData, calendarData, setCalendarData, calendarSelectData, setIsDetailPopup, setIsListPopup, date, week, setYear, setWeek, setDay, islogin, setPopupCookingId, setCalendarSelectData } = props;
 
   return (
     <li
-      className={setDay === week ? "Calendar__item active" : "Calendar__item"}
+      className={ todayYear === setYear && todayMonth === setMonth && todayDate === date ? "Calendar__item active" : "Calendar__item"}
     >
       <div className="Calendar__day">
         <span>{weekArr[week]}</span>
@@ -41,6 +41,7 @@ const CalendarItem = (props = null) => {
                 week={week} 
                 setYear={setYear}
                 setWeek={setWeek} 
+                setIsLoading={setIsLoading}
               /> 
             : islogin 
               ? <CalendarItemAdd 
@@ -75,6 +76,7 @@ const CalendarItem = (props = null) => {
                 week={week} 
                 setYear={setYear}
                 setWeek={setWeek} 
+                setIsLoading={setIsLoading}
               /> 
             : islogin 
               ? <CalendarItemAdd 
@@ -109,6 +111,7 @@ const CalendarItem = (props = null) => {
                 week={week} 
                 setYear={setYear}
                 setWeek={setWeek} 
+                setIsLoading={setIsLoading}
               /> 
             : islogin 
               ? <CalendarItemAdd 
@@ -162,7 +165,7 @@ const CalendarItemAdd = (props) => {
 
 const CalendarItemContent = (props) => {
   const { setIsDetailPopup, name, id, img, setPopupCookingId, islogin, fullCalendarData, setCalendarData, calendarSelectData } = props;
-  const { setCalendarSelectData, eatTime, week, setYear, setWeek } = props;
+  const { setCalendarSelectData, eatTime, week, setYear, setWeek, setIsLoading } = props;
 
   const handleShowDetail = useCallback(() => {
     setPopupCookingId(id);
@@ -170,6 +173,7 @@ const CalendarItemContent = (props) => {
   });
 
   const handleDeleteOnCalendar = useCallback(() => {
+    setIsLoading(true)
     axios.put(`${host.server}/plan`,{
       year: setYear,
       week: setWeek,
@@ -184,6 +188,7 @@ const CalendarItemContent = (props) => {
             withCredentials: true
         }).then((result) => {
             setCalendarData(result.data)
+            setIsLoading(false)
         }).catch(error => { console.log('failed', error) })
     }).catch(error => { console.log('failed', error) })
 

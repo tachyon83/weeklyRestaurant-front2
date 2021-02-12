@@ -3,7 +3,9 @@ import axios from 'axios';
 import CookingListItem from "./CookingListItem";
 const host = require("../host");
 
-const CookingList = () => {
+const CookingList = ({setIsLoading}) => {
+
+  console.log(setIsLoading, 'setIsLoading')
 
   const [cookingList, setCookingList] = useState([])
 
@@ -19,11 +21,12 @@ const CookingList = () => {
       }
       event.target.classList.add('CookingList__tabItem--active')
     } 
-
+    setIsLoading(true);
     axios.get(`${host.server}/recipe/list?style=${event ? event.target.attributes.nation.value : `kor`}`, {
       withCredentials: true
     }).then((result) => {
       setCookingList(result.data.data);
+      setIsLoading(false);
     }).catch( error => { console.log('failed', error) });
   }, []);
 
@@ -42,7 +45,7 @@ const CookingList = () => {
           {
             cookingList.map((item) => {
               return (
-                <CookingListItem cookingList={item} key={item.id} />
+                <CookingListItem cookingList={item} key={item.id} setIsLoading={setIsLoading} />
               )
             })
           }

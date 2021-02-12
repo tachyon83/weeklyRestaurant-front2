@@ -4,7 +4,7 @@ import axios from 'axios';
 import InventoryItem from './InventoryItem'
 const host = require("../host");
 
-const CookingDetail = ({ islogin }) => {
+const CookingDetail = ({ islogin, setIsLoading }) => {
     let { cookingId } = useParams();
     let history = useHistory();
 
@@ -15,19 +15,23 @@ const CookingDetail = ({ islogin }) => {
     }, [])
 
     const handleDetail = useCallback(() => {
+        setIsLoading(true);
         axios.get(`${host.server}/recipe/${cookingId}`, {
             withCredentials: true
         }).then((result) => {
             setCookingDetail(result.data.data);
+            setIsLoading(false);
         }).catch(error => { console.log('failed', error) });
     }, []);
 
     const onDeleteRecipe = useCallback((e) => {
         e.preventDefault();
+        setIsLoading(true);
         axios.delete(`${host.server}/recipe`, {
             data: { id: `${cookingId}` },
             withCredentials: true
         }).then((result) => {
+            setIsLoading(false);
             console.log('삭제완료', cookingId, result)
             history.push('/cookingList');
         }).catch(error => { console.log('failed', error) });

@@ -3,7 +3,7 @@ import axios from 'axios';
 const host = require("../host");
 
 const InventoryPopup = (props) => {
-    const { inventoryPopupInfo, setInventoryPopupInfo, ingredient, setIngredient } = props;
+    const { setIsLoading,inventoryPopupInfo, setInventoryPopupInfo, ingredient, setIngredient } = props;
     console.log(inventoryPopupInfo, 'popupInfo')
     const [inventoryInputValue, setInventoryInputValue] = useState({
         ingredientType: inventoryPopupInfo.category === 'meat' ? 0 : inventoryPopupInfo.category === 'fish' ? 1 : inventoryPopupInfo.category === 'misc' ? 2 : inventoryPopupInfo.category === 'sauce' ? 3 : null,
@@ -40,6 +40,8 @@ const InventoryPopup = (props) => {
             copyIngredient[inventoryPopupInfo.category].push(inventoryInputValue);
         }
 
+        setIsLoading(true);
+
         axios.put(`${host.server}/inventory`, inventoryInputValue, {
             withCredentials: true
         }).then((result) => {
@@ -59,6 +61,7 @@ const InventoryPopup = (props) => {
                 amount: null,
                 unit: null
             })
+            setIsLoading(false);
         }).catch(error => { console.log('failed', error) });
         
     }, [inventoryPopupInfo, inventoryInputValue])

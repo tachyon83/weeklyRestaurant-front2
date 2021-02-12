@@ -3,7 +3,7 @@ import axios from 'axios';
 import CookingListItem from "./CookingListItem";
 const host = require("../host");
 
-const CookingListPop = ({setIsListPopup, setIsDetailPopup, setPopupCookingId, popupCookingId, calendarSelectData, calendarData, setCalendarData}) => {
+const CookingListPop = ({setIsLoading,setIsListPopup, setIsDetailPopup, setPopupCookingId, popupCookingId, calendarSelectData, calendarData, setCalendarData}) => {
 
     const [cookingList, setCookingList] = useState([])
     useEffect(()=> {
@@ -18,11 +18,14 @@ const CookingListPop = ({setIsListPopup, setIsDetailPopup, setPopupCookingId, po
           }
           event.target.classList.add('CookingList__tabItem--active')
         } 
+
+        setIsLoading(true);
     
         axios.get(`${host.server}/recipe/list?style=${event ? event.target.attributes.nation.value : `kor`}`, {
             withCredentials: true
           }).then((result) => {
-          setCookingList(result.data.data)
+          setCookingList(result.data.data);
+          setIsLoading(false);
         }).catch( error => { console.log('failed', error) });
     }, [setCookingList]);
     
@@ -50,7 +53,7 @@ const CookingListPop = ({setIsListPopup, setIsDetailPopup, setPopupCookingId, po
                 {
                     cookingList.map((item) => {
                     return (
-                        <CookingListItem cookingList={item} key={item.id} popup={true} setIsListPopup={setIsListPopup} setIsDetailPopup={setIsDetailPopup} setPopupCookingId={setPopupCookingId} popupCookingId={popupCookingId} calendarSelectData={calendarSelectData} calendarData={calendarData} setCalendarData={setCalendarData}/>
+                        <CookingListItem setIsLoading={setIsLoading} cookingList={item} key={item.id} popup={true} setIsListPopup={setIsListPopup} setIsDetailPopup={setIsDetailPopup} setPopupCookingId={setPopupCookingId} popupCookingId={popupCookingId} calendarSelectData={calendarSelectData} calendarData={calendarData} setCalendarData={setCalendarData}/>
                     )
                     })
                 }

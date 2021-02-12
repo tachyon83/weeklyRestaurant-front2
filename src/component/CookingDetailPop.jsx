@@ -4,7 +4,7 @@ import InventoryItem from './InventoryItem'
 const host = require("../host");
 
 
-const CookingDetailPop = ({ setIsDetailPopup, popupCookingId = 1134 }) => {
+const CookingDetailPop = ({setIsLoading, setIsDetailPopup, popupCookingId = 1134 }) => {
     const handleCloseDetail = useCallback(
         () => {
             setIsDetailPopup(false)
@@ -19,11 +19,13 @@ const CookingDetailPop = ({ setIsDetailPopup, popupCookingId = 1134 }) => {
     }, [])
 
     const handleDetail = useCallback(() => {
+        setIsLoading(true)
         axios.get(`${host.server}/recipe/${popupCookingId}`, {
             withCredentials: true
         }).then((result) => {
             console.log(result.data)
             setCookingDetail(result.data.data);
+            setIsLoading(false);
         }).catch(error => { console.log('failed', error) });
     }, [popupCookingId]);
 

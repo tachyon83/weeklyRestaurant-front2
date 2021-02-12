@@ -57,7 +57,7 @@ const Calendar = (props) => {
     }
   }
 
-  const {calendarData, setCalendarData, calendarSelectData, setIsDetailPopup, setIsListPopup, islogin, setPopupCookingId, setCalendarSelectData } = props;
+  const {setIsLoading,calendarData, setCalendarData, calendarSelectData, setIsDetailPopup, setIsListPopup, islogin, setPopupCookingId, setCalendarSelectData } = props;
   const [calendarDateInfo, setCalendarDateInfo] = useState({
     setYear: todayYear,
     setMonth: todayMonth,
@@ -88,10 +88,12 @@ const Calendar = (props) => {
   });
 
   useEffect(() => {
+    setIsLoading(true)
     axios.get(`${host.server}/plan/${calendarDateInfo.setYear}/${calendarDateInfo.setWeek}`, {
       withCredentials: true
     }).then((result) => {
       setCalendarData(result.data)
+      setIsLoading(false)
     }).catch(error => { console.log('failed', error) })
 
     
@@ -210,9 +212,14 @@ const Calendar = (props) => {
                 calendarSelectData={calendarSelectData}
                 setCalendarSelectData={setCalendarSelectData}
                 islogin={islogin}
+                todayDate={todayDate}
+                todayMonth={todayMonth}
+                todayYear={todayYear}
                 setPopupCookingId={setPopupCookingId}
                 setYear={calendarDateInfo.setYear}
                 setWeek={calendarDateInfo.setWeek}
+                setMonth={calendarDateInfo.setMonth}
+                setIsLoading={setIsLoading}
               />
             )
           })

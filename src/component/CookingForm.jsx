@@ -1,27 +1,31 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from 'axios';
 import CookingFormSelectOption from './CookingFormSelectOption';
 import CookingFormCustomOption from './CookingFormCustomOption';
 
 const host = require("../host");
 
-const CookingForm = ({ history }) => {
+const CookingForm = ({ setIsLoading }) => {
   // params로 수정할 요리의 id를 받아온다.
   let { cookingId } = useParams();
+  let history = useHistory();
   console.log('cookingId', cookingId)
 
   useEffect(() => {
+    setIsLoading(true);
     axios.get(`${host.server}/recipe/new`, {
       withCredentials: true
     }).then((result) => {
       setBaseOption(result.data.data)
       console.log('data in cookingForm.jsx>/recipe/new', result.data.data)
+      setIsLoading(false);
     }).catch((error) => { console.log('failed', error) })
   }, [])
 
   // 수정시 레시피 get
   useEffect(() => {
+    setIsLoading(true);
     if (cookingId) {
       axios.get(`${host.server}/recipe/${cookingId}`, {
         withCredentials: true
@@ -55,6 +59,8 @@ const CookingForm = ({ history }) => {
           misc: miscArr,
           sauce: sauceArr,
         })
+
+        setIsLoading(false);
 
       }).catch((error) => { console.log('failed', error) })
     }
@@ -133,10 +139,10 @@ const CookingForm = ({ history }) => {
 
     console.log(cookingForm, '최종 전송 폼')
 
+    setIsLoading(true);
     axios.post(`${host.server}/recipe`, cookingForm, {
       withCredentials: true
     }).then((result) => {
-      alert('요리 추가 성공.')
       setHandleValue({
         targetCateogry: null,
         contents: {
@@ -183,6 +189,8 @@ const CookingForm = ({ history }) => {
       // 카테고리 style 옵션 초기화
       selectStyle.current.selectedIndex = 0;
 
+      setIsLoading(false);
+
     }).catch(error => { console.log('failed', error) });
 
   }, [cookingForm])
@@ -200,11 +208,14 @@ const CookingForm = ({ history }) => {
     e.preventDefault();
     console.log('전달 레시피', cookingForm)
 
+    setIsLoading(true);
+
     axios.put(`${host.server}/recipe`, cookingForm, {
       withCredentials: true
     }).then((result) => {
       console.log('요리 수정완료', result)
       history.push(`/cookingList/${cookingId}`);
+      setIsLoading(false);
     }).catch(error => { console.log('failed', error) });
   }, [cookingForm])
 
