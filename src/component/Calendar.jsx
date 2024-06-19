@@ -104,7 +104,7 @@ const Calendar = (props) => {
         }
       )
       .then((result) => {
-        setCalendarData(result.data);
+        setCalendarData(result.data || {}); // Ensure result.data is an object
         setIsLoading(false);
       })
       .catch((error) => {
@@ -221,37 +221,33 @@ const Calendar = (props) => {
       </div>
 
       <ul className="Calendar">
-        {calendarData.data
-          ? calendarDateArr.map((item, i) => {
-              return (
-                <CalendarItem
-                  setIsDetailPopup={setIsDetailPopup}
-                  setIsListPopup={setIsListPopup}
-                  date={item}
-                  week={i}
-                  key={i}
-                  setDay={calendarDateInfo.setDay}
-                  calendarData={calendarData.data ? calendarData.data[i] : {}}
-                  fullCalendarData={calendarData}
-                  setCalendarData={setCalendarData}
-                  calendarSelectData={calendarSelectData}
-                  setCalendarSelectData={setCalendarSelectData}
-                  islogin={islogin}
-                  todayDate={todayDate}
-                  todayMonth={todayMonth}
-                  todayYear={todayYear}
-                  setPopupCookingId={setPopupCookingId}
-                  setYear={calendarDateInfo.setYear}
-                  setWeek={calendarDateInfo.setWeek}
-                  setMonth={calendarDateInfo.setMonth}
-                  setIsLoading={setIsLoading}
-                />
-              );
-            })
+        {calendarData.data && calendarData.data.length
+          ? calendarDateArr.map((item, i) => (
+              <CalendarItem
+                setIsDetailPopup={setIsDetailPopup}
+                setIsListPopup={setIsListPopup}
+                date={item}
+                week={i}
+                key={i}
+                setDay={calendarDateInfo.setDay}
+                calendarData={calendarData.data[i] || {}} // Safely access calendarData.data[i]
+                fullCalendarData={calendarData}
+                setCalendarData={setCalendarData}
+                calendarSelectData={calendarSelectData}
+                setCalendarSelectData={setCalendarSelectData}
+                islogin={islogin}
+                todayDate={todayDate}
+                todayMonth={todayMonth}
+                todayYear={todayYear}
+                setPopupCookingId={setPopupCookingId}
+                setYear={calendarDateInfo.setYear}
+                setWeek={calendarDateInfo.setWeek}
+                setMonth={calendarDateInfo.setMonth}
+                setIsLoading={setIsLoading}
+              />
+            ))
           : null}
       </ul>
     </div>
   );
 };
-
-export default Calendar;
