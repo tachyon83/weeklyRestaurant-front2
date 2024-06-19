@@ -31,7 +31,7 @@ const App = () => {
       <main>
         <div className="layoutWrap">
           <Routes>
-            <Navigate from="/weeklyRestaurant" to="/" />
+            <Route path="/weeklyRestaurant" element={<Navigate to="/" />} />
             <Route exact path="/">
               <Main islogin={islogin} setIsLoading={setIsLoading} />
             </Route>
