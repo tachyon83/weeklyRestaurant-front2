@@ -19,8 +19,9 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (JSON.parse(sessionStorage.getItem("islogin"))) {
-      setIslogin(true);
+    const loginStatus = sessionStorage.getItem("islogin");
+    if (loginStatus) {
+      setIslogin(JSON.parse(loginStatus));
     }
   }, []);
 
@@ -49,9 +50,9 @@ const App = () => {
             />
             <Route
               path="/cookingList/:cookingId"
-              render={() => (
+              element={
                 <CookingDetail islogin={islogin} setIsLoading={setIsLoading} />
-              )}
+              }
             />
             <Route
               path="/cookingList"
