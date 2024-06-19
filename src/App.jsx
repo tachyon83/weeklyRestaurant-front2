@@ -37,13 +37,16 @@ const App = () => {
               path="/"
               element={<Main islogin={islogin} setIsLoading={setIsLoading} />}
             />
-            <Route path="/login">
-              {islogin ? (
-                <Navigate to="/" />
-              ) : (
-                <Login setIslogin={setIslogin} />
-              )}
-            </Route>
+            <Route
+              path="/login"
+              element={
+                islogin ? (
+                  <Navigate to="/" />
+                ) : (
+                  <Login setIslogin={setIslogin} />
+                )
+              }
+            />
             <Route
               path="/cookingList/:cookingId"
               render={() => (
