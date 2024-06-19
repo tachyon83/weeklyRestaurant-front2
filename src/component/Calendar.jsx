@@ -231,7 +231,7 @@ const Calendar = (props) => {
                   week={i}
                   key={i}
                   setDay={calendarDateInfo.setDay}
-                  calendarData={calendarData.data[i] || {}}
+                  calendarData={calendarData.data ? calendarData.data[i] : {}}
                   fullCalendarData={calendarData}
                   setCalendarData={setCalendarData}
                   calendarSelectData={calendarSelectData}
