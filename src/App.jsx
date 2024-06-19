@@ -3,7 +3,7 @@ import {
   Route,
   BrowserRouter as Router,
   Routes,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
 import Main from "./component/Main";
 import Login from "./component/Login";
@@ -31,13 +31,13 @@ const App = () => {
       <main>
         <div className="layoutWrap">
           <Routes>
-            <Redirect from="/weeklyRestaurant" to="/" />
+            <Navigate from="/weeklyRestaurant" to="/" />
             <Route exact path="/">
               <Main islogin={islogin} setIsLoading={setIsLoading} />
             </Route>
             <Route path="/login">
               {islogin ? (
-                <Redirect to="/" />
+                <Navigate to="/" />
               ) : (
                 <Login setIslogin={setIslogin} />
               )}
