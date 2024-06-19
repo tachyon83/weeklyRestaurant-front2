@@ -32,9 +32,11 @@ const App = () => {
         <div className="layoutWrap">
           <Routes>
             <Route path="/weeklyRestaurant" element={<Navigate to="/" />} />
-            <Route exact path="/">
-              <Main islogin={islogin} setIsLoading={setIsLoading} />
-            </Route>
+            <Route
+              exact
+              path="/"
+              element={<Main islogin={islogin} setIsLoading={setIsLoading} />}
+            />
             <Route path="/login">
               {islogin ? (
                 <Navigate to="/" />
@@ -48,18 +50,22 @@ const App = () => {
                 <CookingDetail islogin={islogin} setIsLoading={setIsLoading} />
               )}
             />
-            <Route path="/cookingList">
-              <CookingList setIsLoading={setIsLoading} />
-            </Route>
-            <Route path="/cookingForm/:cookingId">
-              <CookingForm setIsLoading={setIsLoading} />
-            </Route>
-            <Route path="/cookingForm">
-              <CookingForm setIsLoading={setIsLoading} />
-            </Route>
-            <Route path="/inventory">
-              <Inventory setIsLoading={setIsLoading} />
-            </Route>
+            <Route
+              path="/cookingList"
+              element={<CookingList setIsLoading={setIsLoading} />}
+            />
+            <Route
+              path="/cookingForm/:cookingId"
+              element={<CookingForm setIsLoading={setIsLoading} />}
+            />
+            <Route
+              path="/cookingForm"
+              element={<CookingForm setIsLoading={setIsLoading} />}
+            />
+            <Route
+              path="/inventory"
+              element={<Inventory setIsLoading={setIsLoading} />}
+            />
           </Routes>
         </div>
       </main>
