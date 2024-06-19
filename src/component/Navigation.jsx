@@ -1,23 +1,27 @@
 import React, { useCallback } from "react";
-import { Link, useHistory } from "react-router-dom";
-import logo from '../images/logo.png';
-import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../images/logo.png";
+import axios from "axios";
 const host = require("../host");
 
 const Navigation = (props) => {
-  const {islogin, setIslogin} = props
-  let history = useHistory();
+  const { islogin, setIslogin } = props;
+  let history = useNavigate();
 
-  const handleLogout = useCallback(
-    () => {
-      axios.get(`${host.server}/member/logout`, {
-        withCredentials: true
-      }).then((result) => {
+  const handleLogout = useCallback(() => {
+    axios
+      .get(`${host.server}/member/logout`, {
+        withCredentials: true,
+      })
+      .then((result) => {
         setIslogin(false);
-        sessionStorage.removeItem('islogin');
-        history.push('/');
-      }).catch( error => { console.log('failed', error) })
-    }, [setIslogin])
+        sessionStorage.removeItem("islogin");
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log("failed", error);
+      });
+  }, [setIslogin]);
 
   return (
     <nav>
@@ -32,22 +36,29 @@ const Navigation = (props) => {
           </Link>
         </h1>
         <ul>
-          <li><Link to="/cookingList">요리 목록</Link></li>
-          {
-            islogin 
-            ? 
+          <li>
+            <Link to="/cookingList">요리 목록</Link>
+          </li>
+          {islogin ? (
             <>
-              <li><Link to="/cookingForm">요리 추가</Link></li>
-              <li><Link to="/inventory">재고 현황</Link></li>
+              <li>
+                <Link to="/cookingForm">요리 추가</Link>
+              </li>
+              <li>
+                <Link to="/inventory">재고 현황</Link>
+              </li>
             </>
-            : null
-          }
+          ) : null}
         </ul>
-        {
-          islogin
-          ? <button className="login" onClick={handleLogout} >로그아웃</button>
-          : <Link to="/login" className="login">로그인</Link>
-        }
+        {islogin ? (
+          <button className="login" onClick={handleLogout}>
+            로그아웃
+          </button>
+        ) : (
+          <Link to="/login" className="login">
+            로그인
+          </Link>
+        )}
       </div>
     </nav>
   );
