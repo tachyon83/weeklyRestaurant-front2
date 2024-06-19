@@ -1,3 +1,5 @@
+// Calendar.js
+
 import React, { useCallback, useState, useEffect } from "react";
 import CalendarItem from "./CalendarItem";
 import axios from "axios";
@@ -104,7 +106,7 @@ const Calendar = (props) => {
         }
       )
       .then((result) => {
-        setCalendarData(result.data || {}); // Ensure result.data is an object
+        setCalendarData(result.data || {});
         setIsLoading(false);
       })
       .catch((error) => {
@@ -251,3 +253,5 @@ const Calendar = (props) => {
     </div>
   );
 };
+
+export default Calendar;
