@@ -31,6 +31,7 @@ const CookingList = ({ setIsLoading }) => {
         withCredentials: true,
       })
       .then((result) => {
+        console.log(34, result);
         setCookingList(result.data.data);
         setIsLoading(false);
       })
