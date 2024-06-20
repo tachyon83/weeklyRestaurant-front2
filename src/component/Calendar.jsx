@@ -225,7 +225,7 @@ const Calendar = (props) => {
       </div>
 
       <ul className="Calendar">
-        {calendarData.data && calendarData.data.length
+        {calendarData && calendarData.data && calendarData.data.length
           ? calendarDateArr.map((item, i) => (
               <CalendarItem
                 setIsDetailPopup={setIsDetailPopup}
