@@ -106,6 +106,8 @@ const Calendar = (props) => {
         }
       )
       .then((result) => {
+        console.log(108, calendarDateInfo);
+        console.log(109, result, result.data);
         setCalendarData(result.data || {});
         setIsLoading(false);
       })
@@ -248,7 +250,7 @@ const Calendar = (props) => {
                 setIsLoading={setIsLoading}
               />
             ))
-          : null}
+          : {}}
       </ul>
     </div>
   );
