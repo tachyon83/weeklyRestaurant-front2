@@ -24,7 +24,7 @@ const CookingList = ({ setIsLoading }) => {
     const nation =
       event && event.target && event.target.attributes.nation
         ? event.target.attributes.nation.value
-        : "kor";
+        : "KOR";
 
     axios
       .get(`${host.server}/recipe/list?style=${nation}`, {
@@ -49,21 +49,21 @@ const CookingList = ({ setIsLoading }) => {
           <li
             className="CookingList__tabItem CookingList__tabItem--active"
             onClick={handleList}
-            nation="kor"
+            nation="KOR"
           >
             한식
           </li>
           <li
             className="CookingList__tabItem"
             onClick={handleList}
-            nation="chn"
+            nation="CHN"
           >
             중식
           </li>
           <li
             className="CookingList__tabItem"
             onClick={handleList}
-            nation="wes"
+            nation="WES"
           >
             양식
           </li>
