@@ -250,7 +250,7 @@ const Calendar = (props) => {
                 setIsLoading={setIsLoading}
               />
             ))
-          : {}}
+          : []}
       </ul>
     </div>
   );
